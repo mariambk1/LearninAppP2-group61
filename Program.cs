@@ -7,9 +7,17 @@ class Player{}
 
 class Position {}
 
-enum Direction{}
+enum Direction{
+    North,
+    East,
+    South,
+    West
+}
 
-enum TurnDirection{}
+enum TurnDirection{
+    Left,
+    Right
+}
 
 
 interface ICommand{}
