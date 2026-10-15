@@ -17,11 +17,11 @@ public class Player
     {
         // movement per direction
         if (direction == Direction.North)
-            position.Y += amountSteps;
+            position.Y -= amountSteps;
         else if (direction == Direction.East)
             position.X += amountSteps;
         else if (direction == Direction.South)
-            position.Y -= amountSteps;
+            position.Y += amountSteps;
         else if (direction == Direction.West)
             position.X -= amountSteps;
     }

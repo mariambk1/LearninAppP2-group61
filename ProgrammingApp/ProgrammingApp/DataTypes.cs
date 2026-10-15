@@ -11,7 +11,11 @@ public class Position
         Y = y;
     }
 
-    // translate function, maar is dit wel nodig als we alle logic in Move() hebben?
+    // geeft een string van de positie van de player
+    public string ToString()
+    {
+        string posString = $"End state ({X}, {Y})";
+    }
 }
 
 public enum Direction
