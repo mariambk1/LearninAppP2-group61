@@ -2,10 +2,13 @@
 
 public interface IProgramImport
 {
-    // import function
+    CommandProgram Import(string filePath);
 }
 
 public class FileImport : IProgramImport
 {
-
+    public CommandProgram Import(string filePath)
+    {
+        // read import
+    }
 }
