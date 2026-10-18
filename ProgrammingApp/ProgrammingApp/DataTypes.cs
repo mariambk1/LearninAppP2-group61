@@ -11,7 +11,6 @@ public class Position
         Y = y;
     }
 
-    // translate function, maar is dit wel nodig als we alle logic in Move() hebben?
 }
 
 public enum Direction
@@ -26,4 +25,11 @@ public enum TurnDirection
 {
     Left,
     Right
+}
+
+public enum ObjectType
+{
+    Basic,
+    Advanced,
+    Expert
 }

@@ -11,15 +11,12 @@ public class Grid
         trace = new List<string>();
     }
 
-    public void ExecuteProgram(CommandProgram program)
+    public void ExecuteProgram(ICommandProgram program)
     {
         player = new Player();
         trace = new List<string>();
 
-        foreach (ICommand command in program.Commands)
-        {
-            command.Execute(player, trace);
-        }
+        program.RunProgram(player, trace);
     }
 
     public List<string> GetTrace()
@@ -34,7 +31,7 @@ public class Grid
 
     public string GetFinalState()
     {
-        return $"End state ({player.position.X},{player.position.Y}) " +
-               $"facing {player.direction.ToString()}.";
+        return $"\nEnd position is ({player.position.X},{player.position.Y}) " +
+               $"while facing {player.direction.ToString()}.";
     }
 }

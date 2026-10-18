@@ -30,7 +30,7 @@ public class TurnCommand : ICommand
     {
         Direction = direction;
     }
-    public void Execute(Player player)
+    public void Execute(Player player, List<string> trace)
     {
         if (Direction == TurnDirection.Left)
         {
@@ -53,9 +53,9 @@ public class RepeatCommand : ICommand
     public RepeatCommand(int times, List<ICommand> commands)
     {
         Times = times;
-        Commands = commands;
+        Commands = commands.ToList();
     }
-    public void Execute(Player player)
+    public void Execute(Player player, List<string> trace)
     {
          for (int i = 0; i < Times; i++)
         {
