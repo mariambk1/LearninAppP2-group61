@@ -15,6 +15,8 @@ public class Position
     public string ToString()
     {
         string posString = $"End state ({X}, {Y})";
+
+        return posString;
     }
 }
 
