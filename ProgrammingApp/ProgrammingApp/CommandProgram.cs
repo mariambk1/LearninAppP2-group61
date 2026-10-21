@@ -39,7 +39,6 @@ public static class CommandLineInteraction
             string choice = Console.ReadLine() ?? "";
 
             if (choice == "5") return;
-
             ICommandProgram program;
 
             try
@@ -60,7 +59,7 @@ public static class CommandLineInteraction
                 continue;
             }
 
-            Console.WriteLine($"\nSelected program: {program.Name}");            
+            Console.WriteLine($"\nSelected program: {program.Name}\n");            
             Console.WriteLine("1. Execute the program\n2. Calculate the metrics \n3. Go back\n");
             Console.Write("Choose action: \n");
 

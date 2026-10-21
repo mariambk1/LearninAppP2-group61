@@ -1,11 +1,9 @@
-
 namespace ProgrammingApp;
 
 public static class ProgramExamples
 {
     private static Random random = new();
 
-    // meerdere basic objects toevoegen, 3 genoeg denk ik.  
     private static List<CommandProgram> basicPrograms =
     [
         new CommandProgram("Path", new List<ICommand>
@@ -15,10 +13,28 @@ public static class ProgramExamples
             new MoveCommand(3),
             new TurnCommand(TurnDirection.Right),
             new MoveCommand(2)
+        }),
+
+        new CommandProgram("Rectangle", new List<ICommand>
+        {
+            new MoveCommand(8),
+            new TurnCommand(TurnDirection.Right),
+            new MoveCommand(4),
+            new TurnCommand(TurnDirection.Right),
+            new MoveCommand(8),
+            new TurnCommand(TurnDirection.Right),
+            new MoveCommand(4),
+            new TurnCommand(TurnDirection.Right)
+        }),
+
+        new CommandProgram("L-path", new List<ICommand>
+        {
+            new MoveCommand(6),
+            new TurnCommand(TurnDirection.Left),
+            new MoveCommand(3)
         })
     ];
 
-    // zelfde voor advanced
     private static List<CommandProgram> advancedPrograms =
     [
         new CommandProgram("Square", new List<ICommand>
@@ -28,10 +44,31 @@ public static class ProgramExamples
                 new MoveCommand(5),
                 new TurnCommand(TurnDirection.Right)
             })
+        }),
+
+        new CommandProgram("Stairs up", new List<ICommand>
+        {
+            new RepeatCommand(4, new List<ICommand>
+            {
+                new MoveCommand(3),
+                new TurnCommand(TurnDirection.Left),
+                new MoveCommand(2),
+                new TurnCommand(TurnDirection.Right)
+            })
+        }),
+
+        new CommandProgram("Stairs down", new List<ICommand>
+        {
+            new RepeatCommand(4, new List<ICommand>
+            {
+                new MoveCommand(3),
+                new TurnCommand(TurnDirection.Right),
+                new MoveCommand(2),
+                new TurnCommand(TurnDirection.Left)
+            })
         })
     ];
 
-    // en ook zo voor expert
     private static List<CommandProgram> expertPrograms =
     [
         new CommandProgram("NestedSquare", new List<ICommand>
@@ -45,11 +82,42 @@ public static class ProgramExamples
                 }),
                 new MoveCommand(2)
             })
+        }),
+
+        new CommandProgram("NestedRectangle", new List<ICommand>
+        {
+            new RepeatCommand(2, new List<ICommand>
+            {
+                new RepeatCommand(2, new List<ICommand>
+                {
+                    new MoveCommand(8),
+                    new TurnCommand(TurnDirection.Right),
+                    new MoveCommand(4),
+                    new TurnCommand(TurnDirection.Right)
+                }),
+                new MoveCommand(3)
+            })
+        }),
+
+        new CommandProgram("NestedStairs", new List<ICommand>
+        {
+            new RepeatCommand(2, new List<ICommand>
+            {
+                new RepeatCommand(3, new List<ICommand>
+                {
+                    new MoveCommand(2),
+                    new TurnCommand(TurnDirection.Left),
+                    new MoveCommand(2),
+                    new TurnCommand(TurnDirection.Right)
+                }),
+                new TurnCommand(TurnDirection.Right),
+                new MoveCommand(3),
+                new TurnCommand(TurnDirection.Left)
+            })
         })
     ];
 
-
-    // random programma kiezen wanneer we meerdere objects hebben per level, heb er nu nog 1 object per level staan 
+    // choosing a random program from the selected difficulty level
     public static CommandProgram GetRandom(ObjectType level)
     {
         List<CommandProgram> programs = level switch
