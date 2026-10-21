@@ -33,7 +33,7 @@ public static class CommandLineInteraction
     {
         while (true)
         {
-            Console.WriteLine("\nChoose: 1. Basic  2. Advanced  3. Expert\n4. Import file (werkt nog niet) 5. Exit\n");
+            Console.WriteLine("\nChoose: 1. Basic  2. Advanced  3. Expert\n4. Import file 5. Exit\n");
             Console.Write("Enter your choice: ");
 
             string choice = Console.ReadLine() ?? "";
@@ -49,7 +49,7 @@ public static class CommandLineInteraction
                     "1" => ProgramExamples.GetRandom(ObjectType.Basic),
                     "2" => ProgramExamples.GetRandom(ObjectType.Advanced),
                     "3" => ProgramExamples.GetRandom(ObjectType.Expert),
-                    //"4" => uitwerken wanneer fileimport werkt , 
+                    "4" => ImportFile() , 
                     _ => throw new ArgumentException("Invalid choice.")
                 };
             }
@@ -60,7 +60,7 @@ public static class CommandLineInteraction
                 continue;
             }
 
-            Console.WriteLine($"\nRandom object of chosen level: {program.Name}");
+            Console.WriteLine($"\nSelected program: {program.Name}");            
             Console.WriteLine("1. Execute the program\n2. Calculate the metrics \n3. Go back\n");
             Console.Write("Choose action: \n");
 
@@ -86,5 +86,13 @@ public static class CommandLineInteraction
         }
     }
 
-    // add function for asking for file path wnr fileimport werkt
+    private static CommandProgram ImportFile()
+    {
+        Console.Write("Enter path of the file that you want to import: ");
+        string filePath = Console.ReadLine() ?? "";
+
+        IProgramImport importer = new FileImport();
+
+        return importer.ImportFromTextFile(filePath);
+    }
 }
