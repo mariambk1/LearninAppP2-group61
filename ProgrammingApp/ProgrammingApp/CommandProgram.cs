@@ -39,6 +39,7 @@ public static class CommandLineInteraction
             string choice = Console.ReadLine() ?? "";
 
             if (choice == "5") return;
+
             ICommandProgram program;
 
             try
