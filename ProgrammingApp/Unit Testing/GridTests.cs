@@ -64,5 +64,4 @@ public class GridTests
 
         Assert.Equal((4, 0), (grid.GetPlayer().position.X, grid.GetPlayer().position.Y));
     }
-
 }
