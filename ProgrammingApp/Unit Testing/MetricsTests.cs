@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace Unit_Testing;
 
-public class MetricsTesting
+public class MetricsTests
 {
     [Fact]
     public void ValidMetricsBasicProgram()
