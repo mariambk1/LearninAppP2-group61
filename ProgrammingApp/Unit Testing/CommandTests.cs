@@ -77,4 +77,3 @@ public class CommandTests
         Assert.All(trace, step => Assert.Equal("Move 2", step));
     }
 }
-}    
