@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="ProgrammingApp/ProgrammingApp.csproj" />
+  <Project Path="Unit Testing/Unit Testing.csproj" Id="1c697717-7f38-4cac-ad19-f72af2c0e7f1" />
 </Solution>
