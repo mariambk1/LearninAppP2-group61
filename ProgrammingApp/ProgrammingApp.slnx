@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="ProgrammingApp/ProgrammingApp.csproj" />
+  <Project Path="ProgrammingAppUI/ProgrammingAppUI.csproj" Id="499ae617-842e-4156-b900-9f260c239744" />
   <Project Path="Unit Testing/Unit Testing.csproj" Id="1c697717-7f38-4cac-ad19-f72af2c0e7f1" />
 </Solution>
