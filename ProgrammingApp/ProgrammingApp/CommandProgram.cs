@@ -1,10 +1,12 @@
-﻿namespace ProgrammingApp;
+﻿using System.Diagnostics;
+
+namespace ProgrammingApp;
 
 public interface ICommandProgram
 {
     string Name { get; }
     List<ICommand> Commands {get;}
-    void RunProgram(Player player, List<string> trace);
+    void RunProgram(Grid grid);
 }
 
 public class CommandProgram : ICommandProgram
@@ -17,12 +19,14 @@ public class CommandProgram : ICommandProgram
         Name = name;
         Commands = commands.ToList();
     }
-    public void RunProgram(Player player, List<string> trace)
+    public void RunProgram(Grid grid)
     {
+        Player player = grid.GetPlayer();
+        List<string> trace = grid.GetTrace();
+
         foreach (ICommand command in Commands)
         {
             command.Execute(player, trace);
         }
     }
-
 }

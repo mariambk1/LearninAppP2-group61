@@ -42,7 +42,7 @@
                 if (action == "1")
                 {
                     var grid = new Grid();
-                    grid.ExecuteProgram(program);
+                    program.RunProgram(grid);
 
                     foreach (string step in grid.GetTrace())
                         Console.WriteLine(step);

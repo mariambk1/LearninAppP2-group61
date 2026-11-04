@@ -18,7 +18,7 @@ public class GridTests
             new MoveCommand(2)
         });
 
-        grid.ExecuteProgram(program);
+        program.RunProgram(grid);
 
         Assert.Equal((7, -3), (grid.GetPlayer().position.X, grid.GetPlayer().position.Y));
     }
@@ -37,7 +37,7 @@ public class GridTests
             })
         });
 
-        grid.ExecuteProgram(program);
+        program.RunProgram(grid);
 
         Assert.Equal((0, 0), (grid.GetPlayer().position.X, grid.GetPlayer().position.Y));
     }
@@ -60,7 +60,7 @@ public class GridTests
             })
         });
 
-        grid.ExecuteProgram(program);
+        program.RunProgram(grid);
 
         Assert.Equal((4, 0), (grid.GetPlayer().position.X, grid.GetPlayer().position.Y));
     }

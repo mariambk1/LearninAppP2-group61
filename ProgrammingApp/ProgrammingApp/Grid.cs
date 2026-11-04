@@ -21,14 +21,6 @@ public class Grid
         cellHeight = 120;
     }
 
-    public void ExecuteProgram(ICommandProgram program)
-    {
-        player = new Player();
-        trace = new List<string>();
-
-        program.RunProgram(player, trace);
-    }
-
     public List<string> GetTrace()
     {
         return trace;
