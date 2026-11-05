@@ -15,22 +15,28 @@ public class Metrics
     {
         foreach (ICommand command in commands)
         {   
-            // elke command telt 1 op
             CommandCount++;
 
-            // als het een repeat is komt er ook 1 bij repeatcount
             if (command is RepeatCommand repeatCommand)
             {   
                 RepeatCount++;
 
-                // nestinglevel +1 als er commands binnen dez repeat zitten
                 int childLevel = nestingLevel + 1;
 
-                // hoogste waarde wordt opgeslagen
                 MaxNestingLevel = Math.Max(MaxNestingLevel, childLevel);
 
-                // recursion, als er nog een repeat in de repeat zit, gaat de childlevel omhoog
                 CalculateCommands(repeatCommand.Commands, childLevel);
+            }
+
+            else if (command is RepeatUntilCommand repeatUntilCommand)
+            {
+                RepeatCount++;
+
+                int childLevel = nestingLevel + 1;
+
+                MaxNestingLevel = Math.Max(MaxNestingLevel, childLevel);
+
+                CalculateCommands(repeatUntilCommand.Commands, childLevel);
             }
         }
     }

@@ -6,7 +6,6 @@ public interface ICommand
     void Execute(Player player, List<string> trace);
 }
 
-//classes to implement and execute commands
 public class MoveCommand : ICommand
 {
     public int Steps{get;}
@@ -64,5 +63,31 @@ public class RepeatCommand : ICommand
                 command.Execute(player, trace);
             }
         }
+    }
+}
+
+
+public enum RepeatUntilCondition
+{
+    WallAhead,
+    GridEdge
+}
+public class RepeatUntilCommand : ICommand
+{
+    public RepeatUntilCondition Condition { get; }
+    public List<ICommand> Commands { get; }
+
+    public RepeatUntilCommand(
+        RepeatUntilCondition condition,
+        List<ICommand> commands)
+    {
+        Condition = condition;
+        Commands = commands.ToList();
+    }
+
+    public void Execute(Player player, List<string> trace)
+    {
+        throw new Exception("Error");
+        // grid nodig, werk ik later uit
     }
 }
