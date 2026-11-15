@@ -1,6 +1,5 @@
 ﻿namespace ProgrammingApp;
 
-//interface for execution commands
 public interface ICommand
 {
     void Execute(Player player, List<string> trace);
@@ -87,7 +86,14 @@ public class RepeatUntilCommand : ICommand
 
     public void Execute(Player player, List<string> trace)
     {
-        throw new Exception("Error");
-        // grid nodig, werk ik later uit
+        trace.Add($"RepeatUntil {Condition}");
+
+        while (!player.grid.CheckCondition(Condition))
+        {
+            foreach (ICommand command in Commands)
+            {
+                command.Execute(player, trace);
+            }
+        }
     }
 }

@@ -4,26 +4,45 @@ public class Player
 {
     public Position position;
     public Direction direction;
+    public Grid grid;
 
-    // constructor voor nieuwe player
     public Player()
     {
         position = new Position(0, 0);
         direction = Direction.East;
     }
 
-    //logic voor updaten van position en direction 
     public void Move(int amountSteps)
     {
-        // movement per direction
-        if (direction == Direction.North)
-            position.Y -= amountSteps;
-        else if (direction == Direction.East)
-            position.X += amountSteps;
-        else if (direction == Direction.South)
-            position.Y += amountSteps;
-        else if (direction == Direction.West)
-            position.X -= amountSteps;
+        for (int i = 0; i < amountSteps; i++)
+        {
+            int x = position.X;
+            int y = position.Y;
+
+            if (direction == Direction.North)
+                y --;
+            else if (direction == Direction.East)
+                x ++;
+            else if (direction == Direction.South)
+                y ++;
+            else if (direction == Direction.West)
+                x --;
+
+            if (grid != null && grid.HasExercise())
+            {
+                if (grid.IsOutsideGrid(x, y))
+                    throw new GridEdgeError();
+
+                if (grid.IsWall(x, y))
+                    throw new WallAheadError();
+            }
+
+            position.X = x;
+            position.Y = y;
+
+            if (grid != null)
+                grid.AddToPath();
+        }
     }
     public void TurnLeft()
     {

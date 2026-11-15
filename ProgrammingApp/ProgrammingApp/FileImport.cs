@@ -9,7 +9,6 @@ public class FileImport : IProgramImport
 {
     public CommandProgram ImportFromTextFile(string filePath)
     {
-        // filepath moet bestaan
         if (!File.Exists(filePath))
         {
             throw new FileNotFoundException($"Could not find file at {filePath}");
@@ -17,7 +16,6 @@ public class FileImport : IProgramImport
 
         string[] lines = File.ReadAllLines(filePath);
 
-        // file moet inhoud hebben
         if (lines.Length == 0)
         {
             throw new ArgumentException("Empty file");
@@ -31,8 +29,7 @@ public class FileImport : IProgramImport
         return new CommandProgram(name, commands);
     }
 
-    private List<ICommand> ReadCommands(
-        string[] lines, ref int lineIndex, int currentNesting)
+    private List<ICommand> ReadCommands(string[] lines, ref int lineIndex, int currentNesting)
     {
         List<ICommand> commands = new List<ICommand>();
 
@@ -41,21 +38,17 @@ public class FileImport : IProgramImport
             int lineNumber = lineIndex + 1;
             string line = lines[lineIndex];
 
-            // we can skip empty lines
             if (string.IsNullOrWhiteSpace(line))
             {
                 lineIndex++;
                 continue;
             }
 
-            // variables for indentation and nesting
             int spaces = 0;
-            int indentation = 4; //indentation is 4x space
+            int indentation = 4; 
 
-            //beginwaarde
             int nesting = 0;
 
-            // count spaces at the beginning of the line
             foreach (char character in line)
             {
                 if (character == ' ')
@@ -68,22 +61,18 @@ public class FileImport : IProgramImport
                 }
             }
 
-            // amount of spaces should be divisible by 4
             if (spaces % indentation != 0)
             {
                 throw new FormatException($"Indentation on line {lineNumber} is not correct.");
             }
 
-            // calculate nesting based on the amount of spaces
             nesting = spaces / indentation;
 
-            // if nesting is lower, we are not inside the Repeat anymore
             if (nesting < currentNesting)
             {
                 break;
             }
 
-            // if nesting is higher than expected, indentation is incorrect
             if (nesting != currentNesting)
             {
                 throw new FormatException($"Indentation on line {lineNumber} is not correct.");
@@ -107,7 +96,6 @@ public class FileImport : IProgramImport
                     throw new FormatException($"Invalid Move command on line {lineNumber}.");
                 }
 
-                // negative moves are allowed
                 commands.Add(new MoveCommand(steps));
             }
             else if (command.StartsWith("Repeat ") &&
@@ -121,15 +109,12 @@ public class FileImport : IProgramImport
                     throw new FormatException($"Invalid Repeat command on line {lineNumber}.");
                 }
 
-                // but negative repeats are not allowed 
                 if (times < 0)
                 {
                     throw new FormatException($"Repeat cannot be negative on line {lineNumber}.");
                 }
 
-                // read commands one nesting level deeper
                 List<ICommand> repeatCommands = ReadCommands(lines, ref lineIndex, nesting + 1);
-                // repeat has to have commands inside
                 if (repeatCommands.Count == 0)
                 {
                     throw new FormatException($"Repeat has no commands on line {lineNumber}.");
@@ -137,9 +122,27 @@ public class FileImport : IProgramImport
 
                 commands.Add(new RepeatCommand(times, repeatCommands));
             }
+            else if (command.StartsWith("RepeatUntil "))
+            {
+                string conditionName= command.Substring(12);
+
+                if (!Enum.TryParse(conditionName, out RepeatUntilCondition condition))
+                {
+                    throw new FormatException($"Invalid RepeatUntil condition on line {lineNumber}.");
+                }
+
+                List<ICommand> repeatCommands = ReadCommands(lines, ref lineIndex, nesting + 1);
+
+                if (repeatCommands.Count == 0)
+                {
+                    throw new FormatException($"RepeatUntil has no commands on line {lineNumber}.");
+                }
+
+                commands.Add(new RepeatUntilCommand(condition, repeatCommands));
+            }
             else
             {
-                throw new FormatException($"Unknown command on line {lineNumber}: {command}");
+                throw new FormatException($"unknown command on line {lineNumber}: {command}");
             }
         }
 
