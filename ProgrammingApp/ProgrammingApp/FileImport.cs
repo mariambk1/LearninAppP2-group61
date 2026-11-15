@@ -31,7 +31,7 @@ public class FileImport : IProgramImport
         return new CommandProgram(name, commands);
     }
 
-    private List<ICommand> ReadCommands(
+    public List<ICommand> ReadCommands(
         string[] lines, ref int lineIndex, int currentNesting)
     {
         List<ICommand> commands = new List<ICommand>();
@@ -92,11 +92,11 @@ public class FileImport : IProgramImport
             string command = line.Trim();
             lineIndex++;
 
-            if (command == "Turn left")
+            if (command == "Turn Left")
             {
                 commands.Add(new TurnCommand(TurnDirection.Left));
             }
-            else if (command == "Turn right")
+            else if (command == "Turn Right")
             {
                 commands.Add(new TurnCommand(TurnDirection.Right));
             }

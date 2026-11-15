@@ -16,6 +16,8 @@ namespace ProgrammingAppUI
         public void SetGrid(Grid grid)
         {
             this.grid = grid;
+            this.Location = new Point(1900, 200);
+            this.Size = new Size(600, 600);
             this.Invalidate();
         }
 
