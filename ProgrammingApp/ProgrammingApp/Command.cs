@@ -3,6 +3,7 @@
 public interface ICommand
 {
     void Execute(Player player, List<string> trace);
+    string ToString();
 }
 
 public class MoveCommand : ICommand
@@ -15,19 +16,29 @@ public class MoveCommand : ICommand
     }
     public void Execute(Player player, List<string> trace)
     {
-        player.Move(Steps);
+        for (int i = 0; i < Steps; i++)
+        {
+            player.Move(1);
+        }
+       
         trace.Add($"Move {Steps}");
+    }
+
+    public String ToString()
+    {
+        return ($"Move {Steps}");
     }
 }
 
 public class TurnCommand : ICommand
 {
-    private TurnDirection Direction;
+    public TurnDirection Direction;
 
     public TurnCommand(TurnDirection direction)
     {
         Direction = direction;
     }
+
     public void Execute(Player player, List<string> trace)
     {
         if (Direction == TurnDirection.Left)
@@ -40,6 +51,11 @@ public class TurnCommand : ICommand
             player.TurnRight();
             trace.Add("Turn right");
         }
+    }
+
+    public String ToString()
+    {
+        return ($"Turn {Direction}");
     }
 }
 
@@ -62,6 +78,11 @@ public class RepeatCommand : ICommand
                 command.Execute(player, trace);
             }
         }
+    }
+
+    public string ToString()
+    {
+        return ($"Repeat {Times}");
     }
 }
 

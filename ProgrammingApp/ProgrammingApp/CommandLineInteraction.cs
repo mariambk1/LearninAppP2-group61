@@ -59,7 +59,7 @@
             }
         }
 
-        private static CommandProgram ImportFile()
+        public static CommandProgram ImportFile()
         {
             Console.Write("Enter path of the file that you want to import: ");
             string filePath = Console.ReadLine() ?? "";
