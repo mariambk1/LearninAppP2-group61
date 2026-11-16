@@ -33,12 +33,45 @@ namespace ProgrammingAppUI
             int width = cellWidth * grid.cols;
             int height = cellHeight * grid.rows;
 
-            for (int x = 0; x <= grid.cols; x++)
-                g.DrawLine(gridPen, x * cellWidth, 0, x * cellWidth, height);
+            for (int y = 0; y < grid.rows; y++)
+            {
+                for (int x = 0; x < grid.cols; x++)
+                {
+                    int drawX = x * cellWidth;
+                    int drawY = y * cellHeight;
 
-            for (int y = 0; y <= grid.rows; y++)
-                g.DrawLine(gridPen, 0, y * cellHeight, width, y * cellHeight);
+                    if (grid.HasExercise())
+                    {
+                        char cell = grid.GetCell(x, y);
+                        if (cell == '+')
+                        {
+                            // draw wall
+                            Brush wallBrush = new SolidBrush(Color.FromArgb(50, 50, 50));
+                            g.FillRectangle(wallBrush, drawX, drawY, cellWidth, cellHeight);
+                        }
+                        else if (cell == 'x')
+                        {
+                            // draw end target as an X
+                            Pen targetBrush = new Pen(Color.FromArgb(46, 139, 87), 4);
+                            float padding = cellWidth * 0.25f;
 
+                            g.DrawLine(targetBrush,
+                                        drawX + padding,
+                                        drawY + padding,
+                                        drawX + cellWidth - padding,
+                                        drawY + cellHeight - padding);
+
+                            g.DrawLine(targetBrush,
+                                drawX + padding,
+                                drawY + cellHeight - padding,
+                                drawX + cellWidth - padding,
+                                drawY + padding);
+                        }
+                    }
+
+                    g.DrawRectangle(gridPen, drawX, drawY, cellWidth, cellHeight);
+                }
+            }
             // draw the player
             Player player = grid.GetPlayer();
             Brush playerBrush = new SolidBrush(Color.CornflowerBlue);

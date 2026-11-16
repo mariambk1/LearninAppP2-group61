@@ -8,8 +8,8 @@ public static class ProgramExamples
     [
         new CommandProgram("Path", new List<ICommand>
         {
-            new MoveCommand(5),
-            new TurnCommand(TurnDirection.Left),
+            new MoveCommand(4),
+            new TurnCommand(TurnDirection.Right),
             new MoveCommand(3),
             new TurnCommand(TurnDirection.Right),
             new MoveCommand(2)
@@ -17,11 +17,11 @@ public static class ProgramExamples
 
         new CommandProgram("Rectangle", new List<ICommand>
         {
-            new MoveCommand(8),
+            new MoveCommand(4),
             new TurnCommand(TurnDirection.Right),
             new MoveCommand(4),
             new TurnCommand(TurnDirection.Right),
-            new MoveCommand(8),
+            new MoveCommand(4),
             new TurnCommand(TurnDirection.Right),
             new MoveCommand(4),
             new TurnCommand(TurnDirection.Right)
@@ -29,7 +29,7 @@ public static class ProgramExamples
 
         new CommandProgram("L-path", new List<ICommand>
         {
-            new MoveCommand(6),
+            new MoveCommand(4),
             new TurnCommand(TurnDirection.Left),
             new MoveCommand(3)
         })
@@ -41,7 +41,7 @@ public static class ProgramExamples
         {
             new RepeatCommand(4, new List<ICommand>
             {
-                new MoveCommand(5),
+                new MoveCommand(4),
                 new TurnCommand(TurnDirection.Right)
             })
         }),
@@ -90,7 +90,7 @@ public static class ProgramExamples
             {
                 new RepeatCommand(2, new List<ICommand>
                 {
-                    new MoveCommand(8),
+                    new MoveCommand(4),
                     new TurnCommand(TurnDirection.Right),
                     new MoveCommand(4),
                     new TurnCommand(TurnDirection.Right)
