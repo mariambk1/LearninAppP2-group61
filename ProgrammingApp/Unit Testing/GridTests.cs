@@ -64,4 +64,88 @@ public class GridTests
 
         Assert.Equal((4, 0), (grid.GetPlayer().position.X, grid.GetPlayer().position.Y));
     }
+
+    [Fact]
+    public void ValidIsWall()
+    {
+        string[] mapLines = {
+                "o+o",
+                "ooo",
+                "ooo"
+            };
+        var temporaryPath = Path.GetTempFileName();
+        File.WriteAllLines(temporaryPath, mapLines);
+
+        Grid grid = new Grid();
+        grid.LoadExercise(temporaryPath);
+
+        Assert.True(grid.IsWall(1, 0));
+        Assert.False(grid.IsWall(0, 0));
+    }
+
+    [Fact]
+    public void ValidWallAheadError()
+    {
+        string[] mapLines = {
+                "o+o",
+                "ooo",
+                "ooo"
+            };
+        var temporaryPath = Path.GetTempFileName();
+        File.WriteAllLines(temporaryPath, mapLines);
+
+        Grid grid = new Grid();
+        grid.LoadExercise(temporaryPath);
+        Player player = grid.GetPlayer();
+
+        Assert.Throws<WallAheadError>(() =>
+        {
+            player.Move(1);
+        });
+    }
+
+    [Fact]
+    public void ValidGridEdgeError()
+    {
+        string[] mapLines = {
+                "ooo",
+                "ooo",
+                "ooo"
+            };
+        var temporaryPath = Path.GetTempFileName();
+        File.WriteAllLines(temporaryPath, mapLines);
+
+        Grid grid = new Grid();
+        grid.LoadExercise(temporaryPath);
+        Player player = grid.GetPlayer(); 
+
+        player.TurnLeft();
+
+        Assert.Throws<GridEdgeError>(() =>
+        {
+            player.Move(1);
+        });
+    }
+
+    [Fact]
+    public void ValidTargetReached()
+    {
+        string[] mapLines = {
+                "oox",
+                "ooo",
+                "ooo"
+            };
+        var temporaryPath = Path.GetTempFileName();
+        File.WriteAllLines(temporaryPath, mapLines);
+
+        Grid grid = new Grid();
+        grid.LoadExercise(temporaryPath);
+        Player player = grid.GetPlayer();
+
+        Assert.False(grid.IsSuccessful());
+
+        player.Move(2);
+
+        Assert.True(grid.IsSuccessful());
+    }
 }
