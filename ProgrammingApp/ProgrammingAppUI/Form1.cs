@@ -25,7 +25,7 @@ namespace ProgrammingAppUI
             InitializeComponent();
             InitializeComponentCustom();
             this.BackColor = Color.FromArgb(36, 36, 36);
-            this.Text = "Programming App";
+            this.Text = "Code Buddy";
             grid = new Grid();
             gridUI.SetGrid(grid);
             this.WindowState = FormWindowState.Maximized;
