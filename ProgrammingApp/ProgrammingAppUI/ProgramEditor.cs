@@ -23,14 +23,42 @@ namespace ProgrammingAppUI
             if (program == null)
                 return;
 
-            System.Text.StringBuilder stringBuilder = new();
-
-            foreach (var command in program.Commands)
-                stringBuilder.AppendLine(command.ToString());
-
-            this.Text = stringBuilder.ToString();
+            StringBuilder text = new();
+            AppendCommands(program.Commands, text, 0);
+            Text = text.ToString();
         }
 
+        private void AppendCommands(
+            IEnumerable<ICommand> commands,
+            StringBuilder text,
+            int depth)
+        {
+            string indent = new string(' ', depth * 4);
+
+            foreach (ICommand command in commands)
+            {
+                switch (command)
+                {
+                    case MoveCommand move:
+                        text.AppendLine($"{indent}Move {move.Steps}");
+                        break;
+
+                    case TurnCommand turn:
+                        text.AppendLine($"{indent}Turn {turn.Direction}");
+                        break;
+
+                    case RepeatCommand repeat:
+                        text.AppendLine($"{indent}Repeat {repeat.Times} times");
+                        AppendCommands(repeat.Commands, text, depth + 1);
+                        break;
+
+                    case RepeatUntilCommand until:
+                        text.AppendLine($"{indent}RepeatUntil {until.Condition}");
+                        AppendCommands(until.Commands, text, depth + 1);
+                        break;
+                }
+            }
+        }
         public  CommandProgram ParseProgramText(string rawText)
         {
             string[] lines = rawText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
@@ -41,7 +69,7 @@ namespace ProgrammingAppUI
             }
 
             string programName = lines[0].Trim();
-            int lineIndex = 1;
+            int lineIndex = 0;
 
             FileImport importer = new();
             List<ICommand> commands = importer.ReadCommands(lines, ref lineIndex, 0);

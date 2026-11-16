@@ -12,7 +12,7 @@ namespace ProgrammingAppUI
             this.Text = "Run";
             this.Font = new Font("Arial", 12, FontStyle.Bold);
             this.ForeColor = Color.White;
-            this.Location = new Point(900, 1200);
+            this.Location = new Point(380, 20);
             this.Size = new Size(200, 80);
 
             this.MouseEnter += (sender, e) => { this.BackColor = Color.DarkGreen; this.Cursor = Cursors.Hand; };
@@ -28,7 +28,7 @@ namespace ProgrammingAppUI
             this.Text = "Metrics";
             this.Font = new Font("Arial", 12, FontStyle.Bold);
             this.ForeColor = Color.White;
-            this.Location = new Point(1150, 1200);
+            this.Location = new Point(600, 20);
             this.Size = new Size(200, 80);
 
             this.MouseEnter += (sender, e) => { this.Cursor = Cursors.Hand; this.BackColor = Color.RoyalBlue; };

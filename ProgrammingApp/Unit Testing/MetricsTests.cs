@@ -65,4 +65,21 @@ public class MetricsTests
         Assert.Equal(2, metrics.MaxNestingLevel);
         Assert.Equal(2, metrics.RepeatCount);
     }
+
+    [Fact]
+    public void MetricsIncludeRepeatUntilInsideRepeat()
+    {
+        var commands = new List<ICommand>
+        {
+            new RepeatCommand(2, new List<ICommand>
+            {
+                new RepeatUntilCommand(RepeatUntilCondition.WallAhead, new List<ICommand>{new MoveCommand(1)}), new TurnCommand(TurnDirection.Right)
+            })
+        };
+        var metrics = new Metrics(commands);
+
+        Assert.Equal(4, metrics.CommandCount);
+        Assert.Equal(2, metrics.RepeatCount);
+        Assert.Equal(2, metrics.MaxNestingLevel);
+    }
 }

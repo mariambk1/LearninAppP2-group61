@@ -16,6 +16,7 @@ namespace ProgrammingAppUI
         private ToolStripMenuItem advancedProgram;
         private ToolStripMenuItem expertProgram;
         private ToolStripMenuItem importProgram;
+        private TextBox traceOutput;
 
         public Form1()
         {
@@ -26,6 +27,8 @@ namespace ProgrammingAppUI
             grid = new Grid();
             gridUI.SetGrid(grid);
             this.WindowState = FormWindowState.Maximized;
+            LayoutControls();
+            this.Resize += (sender, e) => LayoutControls();
         }
 
         private void InitializeComponentCustom()
@@ -41,6 +44,7 @@ namespace ProgrammingAppUI
             this.Controls.Add(runButton);
 
             metricsButton = new();
+            metricsButton.Click += MetricsButton_Click;
             this.Controls.Add(metricsButton);
 
             loadProgramButton = new();
@@ -67,21 +71,85 @@ namespace ProgrammingAppUI
             loadProgramMenu.Items.Add(expertProgram);
             loadProgramMenu.Items.Add(importProgram);
 
+            Size buttonSize = new Size(180, 50);
+
+            loadProgramButton.Size = buttonSize;
+            runButton.Size = buttonSize;
+            metricsButton.Size = buttonSize;
+
+            loadProgramButton.Location = new Point(20, 20);
+            runButton.Location = new Point(220, 20);
+            metricsButton.Location = new Point(420, 20);
+
+            traceOutput = new TextBox
+            {
+                Multiline = true,
+                ReadOnly = true,
+                ScrollBars = ScrollBars.Vertical,
+                BackColor = programEditor.BackColor,
+                ForeColor = programEditor.ForeColor,
+                Font = programEditor.Font
+            };
+
+            this.Controls.Add(traceOutput);
+        }
+
+        private void LayoutControls()
+        {
+            int margin = 20;
+            int top = 200;
+            int availableWidth = Math.Max(100, ClientSize.Width - 3 * margin);
+            int availableHeight = Math.Max(100, ClientSize.Height - top - margin);
+            int editorWidth = availableWidth / 2;
+            int traceHeight = availableHeight / 3;
+            int editorHeight = availableHeight - traceHeight - margin;
+
+            programEditor.SetBounds(
+                margin,
+                top,
+                editorWidth,
+                editorHeight);
+
+            gridUI.SetBounds(
+                editorWidth + 2 * margin,
+                top,
+                availableWidth - editorWidth,
+                availableHeight);
+            traceOutput.SetBounds(
+                margin,
+                top + editorHeight + margin,
+                editorWidth,
+                traceHeight);
         }
 
         private void RunButton_Click(object sender, EventArgs e)
         {
-            if (program == null)
+            if (string.IsNullOrWhiteSpace(programEditor.Text))
             {
                 MessageBox.Show("Please load or type a program first.");
                 return;
             }
-
-            string text = programEditor.Text;
-            ICommandProgram currentProgram = programEditor.ParseProgramText(text);
-
+            ICommandProgram currentProgram = programEditor.ParseProgramText(programEditor.Text);
+            grid.GetTrace().Clear();
+            traceOutput.Clear();
             currentProgram.RunProgram(grid);
+
+            traceOutput.Text = string.Join(Environment.NewLine, grid.GetTrace()) + Environment.NewLine + grid.GetFinalState();
+
             gridUI.Invalidate();
+        }
+
+        private void MetricsButton_Click(object sender, EventArgs e)
+        {
+            ICommandProgram currentProgram =
+                programEditor.ParseProgramText(programEditor.Text);
+            Metrics metrics = new(currentProgram.Commands);
+
+            MessageBox.Show(
+                $"Commands: {metrics.CommandCount}\n" +
+                $"Repeat commands: {metrics.RepeatCount}\n" +
+                $"Maximum nesting: {metrics.MaxNestingLevel}",
+                "Program metrics");
         }
 
         public void LoadProgramButton_Click(object sender, EventArgs e)
@@ -109,7 +177,13 @@ namespace ProgrammingAppUI
 
         public void ImportProgram_Click(object sender, EventArgs e)
         {
-            program = CommandLineInteraction.ImportFile();
+            using OpenFileDialog dialog = new();
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            program = new FileImport().ImportFromTextFile(dialog.FileName);
+            programEditor.ViewProgram(program);
         }
     }
 }
