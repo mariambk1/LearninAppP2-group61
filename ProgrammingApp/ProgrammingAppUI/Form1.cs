@@ -134,7 +134,7 @@ namespace ProgrammingAppUI
             traceOutput.Clear();
             currentProgram.RunProgram(grid);
 
-            traceOutput.Text = string.Join(Environment.NewLine, grid.GetTrace()) + Environment.NewLine + grid.GetFinalState();
+            traceOutput.Text = string.Join(Environment.NewLine, grid.GetTrace()) + Environment.NewLine + Environment.NewLine + grid.GetFinalState();
 
             gridUI.Invalidate();
         }

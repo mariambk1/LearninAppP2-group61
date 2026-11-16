@@ -76,5 +76,22 @@ namespace ProgrammingAppUI
 
             return new CommandProgram(programName, commands);
         }
+
+        // pressing tab inserts 4 spaces
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Tab)
+            {
+                int selectionStart = this.SelectionStart;
+
+                this.SelectedText = "    ";
+
+                this.SelectionStart = selectionStart + 4;
+
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }
