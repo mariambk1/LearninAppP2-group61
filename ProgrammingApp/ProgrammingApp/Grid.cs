@@ -15,6 +15,9 @@ public class Grid
     public int cellHeight;
     public int rows;
 
+    private int animationIndex = 0;
+    public bool IsAnimating => animationIndex < path.Count;
+
     public Grid()
     {
         player = new Player();
@@ -43,6 +46,15 @@ public class Grid
     {
         return $"\nEnd position is ({player.position.X},{player.position.Y}) " +
                $"while facing {player.direction.ToString()}.";
+    }
+
+    public void Reset()
+    {
+        player = new();
+        player.grid = this;
+        trace.Clear();
+        path.Clear();
+        path.Add(new Position(0, 0));
     }
 
     public void LoadExercise(string filename)
@@ -127,6 +139,26 @@ public class Grid
     public void AddToPath()
     {
         path.Add(new Position(player.position.X, player.position.Y));
+    }
+
+    public void StartAnimation()
+    {
+        animationIndex = 0;
+        if (path.Count > 0)
+        {
+            player.position.X = path[0].X;
+            player.position.Y = path[0].Y;
+        }
+    }
+
+    public void StepAnimation()
+    {
+        if (animationIndex < path.Count)
+        {
+            player.position.X = path[animationIndex].X;
+            player.position.Y = path[animationIndex].Y;
+            animationIndex++;
+        }
     }
 }
 

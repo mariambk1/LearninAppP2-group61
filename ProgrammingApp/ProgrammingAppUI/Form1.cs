@@ -16,7 +16,9 @@ namespace ProgrammingAppUI
         private ToolStripMenuItem advancedProgram;
         private ToolStripMenuItem expertProgram;
         private ToolStripMenuItem importProgram;
+        private ToolStripMenuItem importExercise;
         private TextBox traceOutput;
+        private System.Windows.Forms.Timer animationTimer;
 
         public Form1()
         {
@@ -29,6 +31,9 @@ namespace ProgrammingAppUI
             this.WindowState = FormWindowState.Maximized;
             LayoutControls();
             this.Resize += (sender, e) => LayoutControls();
+            animationTimer = new();
+            animationTimer.Interval = 500;
+            animationTimer.Tick += AnimationTimer_Tick;
         }
 
         private void InitializeComponentCustom()
@@ -81,6 +86,12 @@ namespace ProgrammingAppUI
             runButton.Location = new Point(220, 20);
             metricsButton.Location = new Point(420, 20);
 
+            importExercise = new("Load Exercise...");
+            importExercise.Click += ImportExercise_Click;
+
+            loadProgramMenu.Items.Add(new ToolStripSeparator());
+            loadProgramMenu.Items.Add(importExercise);
+
             traceOutput = new TextBox
             {
                 Multiline = true,
@@ -129,6 +140,10 @@ namespace ProgrammingAppUI
                 MessageBox.Show("Please load or type a program first.");
                 return;
             }
+
+            grid.Reset();
+            traceOutput.Clear();
+
             CommandProgram currentProgram = programEditor.ParseProgramText(programEditor.Text);
             grid.GetTrace().Clear();
             traceOutput.Clear();
@@ -136,6 +151,9 @@ namespace ProgrammingAppUI
 
             traceOutput.Text = string.Join(Environment.NewLine, grid.GetTrace()) + Environment.NewLine + Environment.NewLine + grid.GetFinalState();
 
+            grid.StartAnimation();
+            animationTimer.Start();
+            
             gridUI.Invalidate();
         }
 
@@ -184,6 +202,41 @@ namespace ProgrammingAppUI
 
             program = new FileImport().ImportFromTextFile(dialog.FileName);
             programEditor.ViewProgram(program);
+        }
+
+        public void ImportExercise_Click(object sender, EventArgs e)
+        {
+            using OpenFileDialog dialog = new();
+            dialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                grid.LoadExercise(dialog.FileName);
+                gridUI.SetGrid(grid);
+
+                MessageBox.Show("Exercise map loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading exercise file:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            if (grid.IsAnimating)
+            {
+                grid.StepAnimation();
+
+                gridUI.Invalidate();
+            }
+            else
+            {
+                animationTimer.Stop();
+            }
         }
     }
 }
