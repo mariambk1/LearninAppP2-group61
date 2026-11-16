@@ -125,10 +125,12 @@ public class Grid
         if (condition == RepeatUntilCondition.WallAhead)
             return IsWall(x, y);
 
-        return  player.position.X == 0 ||
-                player.position.Y == 0 ||
-                player.position.X == cols - 1 ||
-                player.position.Y == rows - 1;
+        if (condition == RepeatUntilCondition.GridEdge)
+        {
+            return IsOutsideGrid(x, y);
+        }
+
+        return false;
     }
 
     public List<Position> GetPath()
