@@ -111,9 +111,6 @@ public class Grid
 
     public bool CheckCondition(RepeatUntilCondition condition)
     {
-        if (!exerciseLoaded)
-            return false;
-
         int x = player.position.X;
         int y = player.position.Y;
 
@@ -123,7 +120,12 @@ public class Grid
         if (player.direction == Direction.West) x--;
 
         if (condition == RepeatUntilCondition.WallAhead)
-            return IsWall(x, y);
+        {
+            if (exerciseLoaded)
+                return IsWall(x, y);
+        }
+        else
+            return IsOutsideGrid(x, y);
 
         if (condition == RepeatUntilCondition.GridEdge)
         {
