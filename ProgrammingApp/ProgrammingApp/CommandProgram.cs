@@ -2,14 +2,7 @@
 
 namespace ProgrammingApp;
 
-public interface ICommandProgram
-{
-    string Name { get; }
-    List<ICommand> Commands {get;}
-    void RunProgram(Grid grid);
-}
-
-public class CommandProgram : ICommandProgram
+public class CommandProgram
 {
     public string Name { get; }
     public List<ICommand> Commands {get;}
@@ -19,6 +12,7 @@ public class CommandProgram : ICommandProgram
         Name = name;
         Commands = commands.ToList();
     }
+
     public void RunProgram(Grid grid)
     {
         Player player = grid.GetPlayer();

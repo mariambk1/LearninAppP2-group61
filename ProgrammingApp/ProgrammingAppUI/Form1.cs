@@ -7,7 +7,7 @@ namespace ProgrammingAppUI
         private Grid grid;
         private GridUI gridUI;
         private ProgramEditor programEditor;
-        private ICommandProgram program;
+        private CommandProgram program;
         private RunButton runButton;
         private MetricsButton metricsButton;
         private LoadProgramButton loadProgramButton;
@@ -129,7 +129,7 @@ namespace ProgrammingAppUI
                 MessageBox.Show("Please load or type a program first.");
                 return;
             }
-            ICommandProgram currentProgram = programEditor.ParseProgramText(programEditor.Text);
+            CommandProgram currentProgram = programEditor.ParseProgramText(programEditor.Text);
             grid.GetTrace().Clear();
             traceOutput.Clear();
             currentProgram.RunProgram(grid);
@@ -141,7 +141,7 @@ namespace ProgrammingAppUI
 
         private void MetricsButton_Click(object sender, EventArgs e)
         {
-            ICommandProgram currentProgram =
+            CommandProgram currentProgram =
                 programEditor.ParseProgramText(programEditor.Text);
             Metrics metrics = new(currentProgram.Commands);
 

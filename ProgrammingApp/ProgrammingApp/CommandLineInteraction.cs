@@ -13,7 +13,7 @@
 
                 if (choice == "5") return;
 
-                ICommandProgram program;
+                CommandProgram program;
 
                 try
                 {

@@ -18,7 +18,7 @@ namespace ProgrammingAppUI
             this.ScrollBars = ScrollBars.Vertical;
         }
 
-        public void ViewProgram(ICommandProgram program)
+        public void ViewProgram(CommandProgram program)
         {
             if (program == null)
                 return;
